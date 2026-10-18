@@ -963,6 +963,7 @@ void FunctionGraph::addUnresolvedJumpToFunction(uint32_t entry, uint32_t site, u
 
   // Not resolvable yet - add as unresolved
   node->addUnresolvedJump(site, target, isCall, conditional);
+  waitingOnTarget_[target].push_back(entry);
   REXCODEGEN_TRACE("FunctionGraph: added unresolved {} 0x{:08X}->0x{:08X} to function 0x{:08X}",
                    isCall ? "call" : "jump", site, target, entry);
 }
@@ -1284,8 +1285,16 @@ TargetKind FunctionGraph::classifyTarget(uint32_t target, uint32_t callerAddr,
 }
 
 void FunctionGraph::notifyFunctionAdded(FunctionNode* newFunction) {
-  for (auto& [base, node] : functions_) {
-    if (node.get() != newFunction && node->isPending()) {
+  // Only a function with an unresolved jump to this entry can resolve against
+  // it, and those were indexed when the jump was added.
+  auto it = waitingOnTarget_.find(newFunction->base());
+  if (it == waitingOnTarget_.end())
+    return;
+  std::vector<uint32_t> waiting = std::move(it->second);
+  waitingOnTarget_.erase(it);
+  for (uint32_t entry : waiting) {
+    FunctionNode* node = getFunction(entry);
+    if (node && node != newFunction && node->isPending()) {
       node->tryResolveAgainst(newFunction);
     }
   }

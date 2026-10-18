@@ -12,23 +12,21 @@
 #include <rex/kernel/xbdm/private.h>
 #include <rex/logging.h>
 #include <rex/hook.h>
+#include <rex/types.h>
+
+#include <cstring>
 
 REX_EXPORT_STUB(__imp__DmAllocatePool);
 REX_EXPORT_STUB(__imp__DmAllocatePoolWithTag);
 REX_EXPORT_STUB(__imp__DmCloseCounters);
-REX_EXPORT_STUB(__imp__DmCloseLoadedModules);
 REX_EXPORT_STUB(__imp__DmCloseModuleSections_);
 REX_EXPORT_STUB(__imp__DmCloseNotificationSession);
-REX_EXPORT_STUB(__imp__DmClosePerformanceCounter);
 REX_EXPORT_STUB(__imp__DmContinueThread);
 REX_EXPORT_STUB(__imp__DmFreePool);
 REX_EXPORT_STUB(__imp__DmGetMemory);
 REX_EXPORT_STUB(__imp__DmGetModuleLongName);
 REX_EXPORT_STUB(__imp__DmGetProcAddress);
 REX_EXPORT_STUB(__imp__DmGetThreadContext);
-REX_EXPORT_STUB(__imp__DmGetThreadList);
-REX_EXPORT_STUB(__imp__DmGetXbeInfo);
-REX_EXPORT_STUB(__imp__DmGetXboxName);
 REX_EXPORT_STUB(__imp__DmGo);
 REX_EXPORT_STUB(__imp__DmHaltThread);
 REX_EXPORT_STUB(__imp__DmIsDebuggerPresent);
@@ -36,15 +34,10 @@ REX_EXPORT_STUB(__imp__DmIsThreadStopped);
 REX_EXPORT_STUB(__imp__DmLoadExtension);
 REX_EXPORT_STUB(__imp__DmNotify);
 REX_EXPORT_STUB(__imp__DmOpenNotificationSession);
-REX_EXPORT_STUB(__imp__DmOpenPerformanceCounter);
-REX_EXPORT_STUB(__imp__DmQueryPerformanceCounterHandle);
-REX_EXPORT_STUB(__imp__DmReboot);
-REX_EXPORT_STUB(__imp__DmRegisterCommandProcessor);
 REX_EXPORT_STUB(__imp__DmRegisterNotificationProcessor);
 REX_EXPORT_STUB(__imp__DmRegisterPerformanceCounter);
 REX_EXPORT_STUB(__imp__DmRemoveBreakpoint);
 REX_EXPORT_STUB(__imp__DmResumeThread);
-REX_EXPORT_STUB(__imp__DmSendNotificationString);
 REX_EXPORT_STUB(__imp__DmSetBreakpoint);
 REX_EXPORT_STUB(__imp__DmSetDataBreakpoint);
 REX_EXPORT_STUB(__imp__DmSetInitialBreakpoint);
@@ -57,7 +50,6 @@ REX_EXPORT_STUB(__imp__DmStopOn);
 REX_EXPORT_STUB(__imp__DmSuspendThread);
 REX_EXPORT_STUB(__imp__DmThreadUserData);
 REX_EXPORT_STUB(__imp__DmUnloadExtension);
-REX_EXPORT_STUB_RETURN(__imp__DmWalkLoadedModules, 0x82DA0104);
 REX_EXPORT_STUB(__imp__DmWalkModuleSections);
 REX_EXPORT_STUB(__imp__DmWalkPerformanceCounters);
 REX_EXPORT_STUB(__imp__DmCloseCounters_0);
@@ -84,12 +76,10 @@ REX_EXPORT_STUB(__imp__DmRegisterAllocationType);
 REX_EXPORT_STUB(__imp__DmInsertAllocationEntry);
 REX_EXPORT_STUB(__imp__DmRemoveAllocationEntry);
 REX_EXPORT_STUB(__imp__DmSetTitleEx);
-REX_EXPORT_STUB(__imp__DmCaptureStackBackTrace);
 REX_EXPORT_STUB(__imp__DmCrashDump);
 REX_EXPORT_STUB(__imp__DmIsFastCAPEnabled);
 REX_EXPORT_STUB(__imp__DmGetFileAccessCount);
 REX_EXPORT_STUB(__imp__DmGetUtilityDriveInfo);
-REX_EXPORT_STUB(__imp__DmGetThreadInfoEx);
 REX_EXPORT_STUB(__imp__DmSetProfilingOptions);
 REX_EXPORT_STUB(__imp__DmQuerySystemSettings);
 REX_EXPORT_STUB(__imp__DmSaveSystemSettings);
@@ -115,17 +105,10 @@ REX_EXPORT_STUB(__imp__DmRebootEx);
 REX_EXPORT_STUB(__imp__DmMountFdfxVolume);
 REX_EXPORT_STUB(__imp__DmCapGetFileHeader);
 REX_EXPORT_STUB(__imp__DmCapFreeFileHeader);
-REX_EXPORT_STUB(__imp__DmTraceStartRecording);
-REX_EXPORT_STUB(__imp__DmTraceStartRecordingFunction);
-REX_EXPORT_STUB(__imp__DmTraceSetBufferSize);
-REX_EXPORT_STUB(__imp__DmTraceStopRecording);
-REX_EXPORT_STUB(__imp__DmTraceSaveBuffer);
 REX_EXPORT_STUB(__imp__DmGetConsoleType);
-REX_EXPORT_STUB(__imp__DmMapDevkitDrive);
 REX_EXPORT_STUB(__imp__DmWalkLoadedModulesEx);
 REX_EXPORT_STUB(__imp__DmGetXexHeaderField);
 REX_EXPORT_STUB(__imp__DmGetMouseChanges);
-REX_EXPORT_STUB(__imp__DmFindPdbSignature);
 REX_EXPORT_STUB(__imp__DmGetProfilingStatus);
 REX_EXPORT_STUB(__imp__DmOpticalDiscLogStart);
 REX_EXPORT_STUB(__imp__DmOpticalDiscLogStop);
@@ -141,11 +124,9 @@ REX_EXPORT_STUB(__imp__DmMarkPseudoEventBegin);
 REX_EXPORT_STUB(__imp__DmMarkPseudoEventEnd);
 REX_EXPORT_STUB(__imp__DmMarkFileEventWorkerThreadBegin);
 REX_EXPORT_STUB(__imp__DmMarkFileEventWorkerThreadEnd);
-REX_EXPORT_STUB(__imp__DmGetSystemInfo);
 REX_EXPORT_STUB(__imp__DmAbortProfiling);
 REX_EXPORT_STUB(__imp__DmNetCaptureStart);
 REX_EXPORT_STUB(__imp__DmNetCaptureStop);
-REX_EXPORT_STUB(__imp__DmQueryTitleMemoryStatistics);
 REX_EXPORT_STUB(__imp__DmAutomationGetInputProcess);
 REX_EXPORT_STUB(__imp__DmAutomationBindController);
 REX_EXPORT_STUB(__imp__DmAutomationUnbindController);
@@ -175,7 +156,6 @@ REX_EXPORT_STUB(__imp__PVPLETemplatedLookupCompactMDS);
 REX_EXPORT_STUB(__imp__DmpPgoCounterOverflow);
 REX_EXPORT_STUB(__imp__UpdateMDSProbeState);
 REX_EXPORT_STUB(__imp__DmGetHttpRegistration);
-REX_EXPORT_STUB(__imp__DmTraceSetIOThread);
 REX_EXPORT_STUB(__imp__DmPMCInstallAndStart);
 REX_EXPORT_STUB(__imp__DmPMCStopAndReport);
 REX_EXPORT_STUB(__imp__DmPMCInstallSetup);
@@ -268,3 +248,112 @@ REX_EXPORT_STUB(__imp__XLockFreeGetErrorHandler);
 REX_EXPORT_STUB(__imp__XLockFreeSetErrorHandler);
 REX_EXPORT_STUB(__imp__DmExecuteThreadRPC);
 REX_EXPORT_STUB(__imp__DmGetDebuggerConnection);
+
+// Project Haggar (n-Space's UE3 build) asserts when xbdm calls fail, so the
+// imports it uses return Xenia's values (src/xenia/kernel/xbdm, BSD) instead
+// of leaving r3 untouched.
+namespace rex::kernel::xbdm {
+namespace {
+constexpr u32 kXbdmSuccessful = 0x02DA0000;
+constexpr u32 kXbdmUnsuccessful = 0x82DA0000;
+constexpr u32 kXbdmEndOfList = 0x82DA0104;
+constexpr u32 kXbdmBufferTooSmall = 0x82DA0105;
+constexpr u32 kInvalidArg = 0x80070057;
+constexpr u32 kErrorInvalidParameter = 0x00000057;
+constexpr u32 kMaxFramesToCapture = 256;
+constexpr char kXboxName[] = "Xbox360Name";
+constexpr size_t kDmXbeSize = 276, kDmnModuleLoadSize = 292, kDmPdbSignatureSize = 280;
+constexpr size_t kDmThreadInfoExSize = 52;
+
+void StoreBE16(uint8_t* p, uint16_t v) { p[0] = uint8_t(v >> 8); p[1] = uint8_t(v); }
+}  // namespace
+
+u32 DmRegisterCommandProcessor_entry(mapped_string name, mapped_u32 handler) {
+  return name ? kXbdmSuccessful : kInvalidArg;
+}
+u32 DmSendNotificationString_entry(mapped_string text) {
+  return text ? kXbdmSuccessful : kInvalidArg;
+}
+u32 DmGetXboxName_entry(mapped_string name, mapped_u32 size) {
+  if (!name || !size)
+    return kInvalidArg;
+  if (sizeof(kXboxName) > *size)
+    return kXbdmBufferTooSmall;
+  std::memcpy(name.host_address(), kXboxName, sizeof(kXboxName));
+  return kXbdmSuccessful;
+}
+u32 DmCaptureStackBackTrace_entry(u32 frames, mapped_u32 trace) {
+  if (frames > kMaxFramesToCapture)
+    return kInvalidArg;
+  if (trace)
+    std::memset(trace.host_address(), 0, frames * sizeof(uint32_t));
+  return kXbdmSuccessful;
+}
+u32 DmWalkLoadedModules_entry(mapped_u32 walk, mapped_void module_load) {
+  if (!walk || !module_load)
+    return kInvalidArg;
+  module_load.Zero(kDmnModuleLoadSize);
+  return kXbdmEndOfList;  // some games loop forever on anything else
+}
+u32 DmCloseLoadedModules_entry(mapped_u32 walk) { return kXbdmSuccessful; }
+u32 DmFindPdbSignature_entry(mapped_void base, mapped_void signature) {
+  if (!base || !signature)
+    return kInvalidArg;
+  signature.Zero(kDmPdbSignatureSize);
+  return kErrorInvalidParameter;
+}
+u32 DmGetXbeInfo_entry(mapped_string name, mapped_void xbe) {
+  if (!xbe)
+    return kInvalidArg;
+  xbe.Zero(kDmXbeSize);
+  return kXbdmSuccessful;
+}
+u32 DmGetSystemInfo_entry(mapped_void info) {
+  if (!info)
+    return kInvalidArg;
+  // size (u32), then base kernel, kernel and XDK versions (major, minor,
+  // build, qfe as u16), then flags.
+  auto* p = static_cast<uint8_t*>(info.host_address());
+  for (int v = 0; v < 2; ++v) {
+    StoreBE16(p + 4 + v * 8 + 0, 2);
+    StoreBE16(p + 4 + v * 8 + 2, 0);
+    StoreBE16(p + 4 + v * 8 + 4, 1888);
+    StoreBE16(p + 4 + v * 8 + 6, 0);
+  }
+  return kXbdmSuccessful;
+}
+u32 DmMapDevkitDrive_entry() { return 0; }
+u32 DmGetThreadInfoEx_entry(u32 thread_id, mapped_void info) {
+  if (!info)
+    return kInvalidArg;
+  info.Zero(kDmThreadInfoExSize);
+  return kXbdmUnsuccessful;
+}
+u32 DmFailed_entry() { return kXbdmUnsuccessful; }
+u32 DmQueryTitleMemoryStatistics_entry(mapped_void stats) { return kXbdmUnsuccessful; }
+
+}  // namespace rex::kernel::xbdm
+
+REX_EXPORT(__imp__DmRegisterCommandProcessor, rex::kernel::xbdm::DmRegisterCommandProcessor_entry)
+REX_EXPORT(__imp__DmSendNotificationString, rex::kernel::xbdm::DmSendNotificationString_entry)
+REX_EXPORT(__imp__DmGetXboxName, rex::kernel::xbdm::DmGetXboxName_entry)
+REX_EXPORT(__imp__DmCaptureStackBackTrace, rex::kernel::xbdm::DmCaptureStackBackTrace_entry)
+REX_EXPORT(__imp__DmWalkLoadedModules, rex::kernel::xbdm::DmWalkLoadedModules_entry)
+REX_EXPORT(__imp__DmCloseLoadedModules, rex::kernel::xbdm::DmCloseLoadedModules_entry)
+REX_EXPORT(__imp__DmFindPdbSignature, rex::kernel::xbdm::DmFindPdbSignature_entry)
+REX_EXPORT(__imp__DmGetXbeInfo, rex::kernel::xbdm::DmGetXbeInfo_entry)
+REX_EXPORT(__imp__DmGetSystemInfo, rex::kernel::xbdm::DmGetSystemInfo_entry)
+REX_EXPORT(__imp__DmMapDevkitDrive, rex::kernel::xbdm::DmMapDevkitDrive_entry)
+REX_EXPORT(__imp__DmGetThreadInfoEx, rex::kernel::xbdm::DmGetThreadInfoEx_entry)
+REX_EXPORT(__imp__DmQueryTitleMemoryStatistics, rex::kernel::xbdm::DmQueryTitleMemoryStatistics_entry)
+REX_EXPORT(__imp__DmOpenPerformanceCounter, rex::kernel::xbdm::DmFailed_entry)
+REX_EXPORT(__imp__DmQueryPerformanceCounterHandle, rex::kernel::xbdm::DmFailed_entry)
+REX_EXPORT(__imp__DmClosePerformanceCounter, rex::kernel::xbdm::DmFailed_entry)
+REX_EXPORT(__imp__DmGetThreadList, rex::kernel::xbdm::DmFailed_entry)
+REX_EXPORT(__imp__DmReboot, rex::kernel::xbdm::DmFailed_entry)
+REX_EXPORT(__imp__DmTraceSetIOThread, rex::kernel::xbdm::DmFailed_entry)
+REX_EXPORT(__imp__DmTraceSetBufferSize, rex::kernel::xbdm::DmFailed_entry)
+REX_EXPORT(__imp__DmTraceSaveBuffer, rex::kernel::xbdm::DmFailed_entry)
+REX_EXPORT(__imp__DmTraceStopRecording, rex::kernel::xbdm::DmFailed_entry)
+REX_EXPORT(__imp__DmTraceStartRecordingFunction, rex::kernel::xbdm::DmFailed_entry)
+REX_EXPORT(__imp__DmTraceStartRecording, rex::kernel::xbdm::DmFailed_entry)

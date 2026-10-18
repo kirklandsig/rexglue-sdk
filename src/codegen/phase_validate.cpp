@@ -74,9 +74,12 @@ void validateConfigBoundaries(CodegenContext& ctx) {
     if (declared == 0)
       continue;
 
-    for (const auto& [otherAddr, other] : graph.functions()) {
-      if (otherAddr <= addr || otherAddr >= addr + declared)
-        continue;
+    // Entries strictly inside [addr, addr + declared), by range on the sorted
+    // map (a scan of every function per entry is O(n^2) at 200k+ functions).
+    const auto& byBase = graph.functionsByBase();
+    for (auto it = byBase.upper_bound(addr); it != byBase.end() && it->first < addr + declared; ++it) {
+      const uint32_t otherAddr = it->first;
+      const FunctionNode* other = it->second;
       auto authority = other->authority();
       if (authority == FunctionAuthority::PDATA || authority == FunctionAuthority::HELPER) {
         REXCODEGEN_DEBUG("[functions] 0x{:08X} size 0x{:X} contains {} 0x{:08X}", addr, declared,

@@ -85,6 +85,8 @@ class FunctionGraph {
   bool isImport(uint32_t addr) const;
 
   // Iterate all functions (includes imports with IMPORT authority)
+  /// Functions sorted by entry address (for range queries).
+  const std::map<uint32_t, FunctionNode*>& functionsByBase() const { return functionsByBase_; }
   const std::unordered_map<uint32_t, std::unique_ptr<FunctionNode>>& functions() const {
     return functions_;
   }
@@ -198,8 +200,11 @@ class FunctionGraph {
   std::unordered_map<uint32_t, bool> functionHasXrefs_;  // entry -> hasXrefs
   std::vector<std::pair<uint32_t, uint32_t>> chunks_;    // base, size pairs
   MemoryReader memoryReader_;
+  // target -> entries of functions with an unresolved jump to it, so adding a
+  // function notifies only those (not every function: O(n^2) at 200k+)
+  std::unordered_map<uint32_t, std::vector<uint32_t>> waitingOnTarget_;
 
-  // Notify all PENDING functions that a new function was added
+  // Notify the PENDING functions waiting on a new function's entry
   void notifyFunctionAdded(FunctionNode* newFunction);
 };
 

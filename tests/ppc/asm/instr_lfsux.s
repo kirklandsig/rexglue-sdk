@@ -1,0 +1,9 @@
+test_lfsux_1:
+  #_ MEMORY_IN 10001050 00 00 00 00 C0 40 00 00
+  #_ REGISTER_IN r4 0x10001050
+  #_ REGISTER_IN r5 4
+  lfsux f1, r4, r5
+  blr
+  #_ REGISTER_OUT f1 -3.0
+  #_ REGISTER_OUT r4 0x10001054
+  #_ REGISTER_OUT r5 4

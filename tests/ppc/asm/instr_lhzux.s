@@ -1,0 +1,9 @@
+test_lhzux_1:
+  #_ MEMORY_IN 10001050 12 34 56 78
+  #_ REGISTER_IN r4 0x10001050
+  #_ REGISTER_IN r5 2
+  lhzux r3, r4, r5
+  blr
+  #_ REGISTER_OUT r3 0x5678
+  #_ REGISTER_OUT r4 0x10001052
+  #_ REGISTER_OUT r5 2

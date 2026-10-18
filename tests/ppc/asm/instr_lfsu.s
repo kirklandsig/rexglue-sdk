@@ -1,0 +1,7 @@
+test_lfsu_1:
+  #_ MEMORY_IN 10001050 00 00 00 00 3F 80 00 00
+  #_ REGISTER_IN r4 0x10001050
+  lfsu f1, 4(r4)
+  blr
+  #_ REGISTER_OUT f1 1.0
+  #_ REGISTER_OUT r4 0x10001054
