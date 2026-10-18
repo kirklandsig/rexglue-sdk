@@ -14,6 +14,7 @@
 
 #include <algorithm>
 #include <atomic>
+#include <chrono>
 #include <string>
 
 #include <rex/cvar.h>
@@ -445,6 +446,18 @@ void VdSwap_entry(mapped_void buffer_ptr,      // ptr into primary ringbuffer
                   mapped_u32 frontbuffer_ptr,  // ptr to frontbuffer address
                   mapped_u32 texture_format_ptr, mapped_u32 color_space_ptr, mapped_u32 width,
                   mapped_u32 height) {
+  // The guest frame rate, logged every 300 swaps (unattended runs have no
+  // overlay to read it from).
+  {
+    static std::atomic<uint64_t> swaps{0};
+    static auto last = std::chrono::steady_clock::now();
+    if (++swaps % 300 == 0) {
+      auto now = std::chrono::steady_clock::now();
+      double secs = std::chrono::duration<double>(now - last).count();
+      last = now;
+      REXKRNL_INFO("VdSwap: {} guest frames, {:.1f} fps over the last 300", swaps.load(), 300.0 / secs);
+    }
+  }
   // All of these parameters are REQUIRED.
   assert(buffer_ptr);
   assert(fetch_ptr);
